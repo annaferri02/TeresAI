@@ -1,0 +1,311 @@
+package main
+
+import (
+	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/joho/godotenv"
+	"github.com/rs/cors"
+)
+
+// MedicalRecord represents the data structure received from the frontend
+type MedicalRecord struct {
+	Transcription string `json:"transcription"`
+	Categories    struct {
+		EatingBehaviour        string `json:"eatingBehaviour"`
+		MedicineAdministration string `json:"medicineAdministration"`
+		Sleep                  string `json:"sleep"`
+		Energy                 string `json:"energy"`
+		PainComplaints         string `json:"painComplaints"`
+		Stool                  string `json:"stool"`
+		BloodPressure          string `json:"bloodPressure"`
+		CareGoals              string `json:"careGoals"`
+	} `json:"categories"`
+	Timestamp string `json:"timestamp"`
+}
+
+// NutsNode represents a node in the Nuts network
+type NutsNode struct {
+	URL       string
+	APIKey    string
+	PublicKey string // For encryption
+}
+
+// ServerResponse is the standardized response structure
+type ServerResponse struct {
+	Success bool        `json:"success"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data,omitempty"`
+	Error   string      `json:"error,omitempty"`
+}
+
+// EncryptedData wraps the encrypted medical record
+type EncryptedData struct {
+	Data        string    `json:"data"`
+	EncryptedAt time.Time `json:"encryptedAt"`
+	Signature   string    `json:"signature"`
+}
+
+// Config for the server
+type Config struct {
+	Port          string
+	NutsNodes     []NutsNode
+	EncryptionKey string
+	SigningKey    string
+}
+
+var config Config
+
+func init() {
+	// Load environment variables
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Warning: .env file not found, using environment variables")
+	}
+
+	// Initialize config
+	config = Config{
+		Port: getEnv("PORT", "8080"),
+		NutsNodes: []NutsNode{
+			{
+				URL:       getEnv("NUTS_NODE1_URL", ""),
+				APIKey:    getEnv("NUTS_NODE1_API_KEY", ""),
+				PublicKey: getEnv("NUTS_NODE1_PUBLIC_KEY", ""),
+			},
+			{
+				URL:       getEnv("NUTS_NODE2_URL", ""),
+				APIKey:    getEnv("NUTS_NODE2_API_KEY", ""),
+				PublicKey: getEnv("NUTS_NODE2_PUBLIC_KEY", ""),
+			},
+		},
+		EncryptionKey: getEnv("ENCRYPTION_KEY", "defaultEncryptionKeyChangeThis"),
+		SigningKey:    getEnv("SIGNING_KEY", "defaultSigningKeyChangeThis"),
+	}
+
+	// Log configuration (omit sensitive data)
+	log.Printf("Server starting on port %s\n", config.Port)
+	log.Printf("Configured with %d Nuts nodes\n", len(config.NutsNodes))
+}
+
+func main() {
+	mux := http.NewServeMux()
+
+	// Routes
+	mux.HandleFunc("/api/process-medical-data", handleProcessMedicalData)
+	mux.HandleFunc("/api/health", handleHealthCheck)
+
+	// Set up CORS
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"}, // Your Next.js frontend URL
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
+
+	// Create HTTP server
+	handler := c.Handler(mux)
+	server := &http.Server{
+		Addr:    ":" + config.Port,
+		Handler: handler,
+	}
+
+	// Start server
+	log.Printf("Server listening on port %s\n", config.Port)
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
+}
+
+// handleProcessMedicalData processes and forwards medical data to the Nuts network
+func handleProcessMedicalData(w http.ResponseWriter, r *http.Request) {
+	// Only accept POST requests
+	if r.Method != http.MethodPost {
+		respondWithError(w, http.StatusMethodNotAllowed, "Method not allowed")
+		return
+	}
+
+	// Parse the request body
+	var medicalRecord MedicalRecord
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&medicalRecord); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	defer r.Body.Close()
+
+	// Validate the medical record
+	if medicalRecord.Transcription == "" {
+		respondWithError(w, http.StatusBadRequest, "Transcription is required")
+		return
+	}
+
+	// Encrypt the medical record
+	encryptedData, err := encryptData(medicalRecord)
+	if err != nil {
+		log.Printf("Encryption error: %v", err)
+		respondWithError(w, http.StatusInternalServerError, "Failed to encrypt data")
+		return
+	}
+
+	// Send the encrypted data to each Nuts node
+	var responses []interface{}
+	for _, node := range config.NutsNodes {
+		response, err := sendToNutsNode(node, encryptedData)
+		if err != nil {
+			log.Printf("Error sending to node %s: %v", node.URL, err)
+			respondWithError(w, http.StatusInternalServerError, fmt.Sprintf("Failed to send to node: %v", err))
+			return
+		}
+		responses = append(responses, response)
+	}
+
+	// Return success response
+	respondWithJSON(w, http.StatusOK, ServerResponse{
+		Success: true,
+		Message: "Medical data processed and sent to Nuts network",
+		Data:    responses,
+	})
+}
+
+// handleHealthCheck is a simple health check endpoint
+func handleHealthCheck(w http.ResponseWriter, r *http.Request) {
+	respondWithJSON(w, http.StatusOK, ServerResponse{
+		Success: true,
+		Message: "Service is healthy",
+		Data: map[string]string{
+			"version":   "1.0.0",
+			"timestamp": time.Now().Format(time.RFC3339),
+		},
+	})
+}
+
+// encryptData encrypts the medical record for secure transmission
+func encryptData(record MedicalRecord) (EncryptedData, error) {
+	// Convert record to JSON
+	jsonData, err := json.Marshal(record)
+	if err != nil {
+		return EncryptedData{}, err
+	}
+
+	// Create encryption key
+	key := sha256.Sum256([]byte(config.EncryptionKey))
+
+	// Create cipher block
+	block, err := aes.NewCipher(key[:])
+	if err != nil {
+		return EncryptedData{}, err
+	}
+
+	// Generate a random IV (Initialization Vector)
+	iv := make([]byte, aes.BlockSize)
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		return EncryptedData{}, err
+	}
+
+	// Encrypt the data
+	padded := pkcs7Pad(jsonData, aes.BlockSize)
+	encrypted := make([]byte, len(padded))
+
+	// Use CBC mode for encryption
+	mode := cipher.NewCBCEncrypter(block, iv)
+	mode.CryptBlocks(encrypted, padded)
+
+	// Combine IV and encrypted data
+	combined := append(iv, encrypted...)
+	encoded := base64.StdEncoding.EncodeToString(combined)
+
+	// Generate a simple signature
+	hash := sha256.Sum256(append([]byte(config.SigningKey), jsonData...))
+	signature := base64.StdEncoding.EncodeToString(hash[:])
+
+	// Create the encrypted data structure
+	encryptedData := EncryptedData{
+		Data:        encoded,
+		EncryptedAt: time.Now(),
+		Signature:   signature,
+	}
+
+	return encryptedData, nil
+}
+
+// sendToNutsNode sends the encrypted data to a Nuts node
+func sendToNutsNode(node NutsNode, data EncryptedData) (map[string]interface{}, error) {
+	// Convert data to JSON
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create the request
+	req, err := http.NewRequest("POST", node.URL+"/api/receive-data", bytes.NewBuffer(jsonData))
+	if err != nil {
+		return nil, err
+	}
+
+	// Set headers
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+node.APIKey)
+
+	// Send the request
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Parse the response
+	var result map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	// Check for errors in response
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("node responded with status %d: %v", resp.StatusCode, result)
+	}
+
+	return result, nil
+}
+
+// pkcs7Pad adds padding to the data according to PKCS#7
+func pkcs7Pad(data []byte, blockSize int) []byte {
+	padding := blockSize - (len(data) % blockSize)
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(data, padtext...)
+}
+
+// respondWithJSON sends a JSON response
+func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(response)
+}
+
+// respondWithError sends an error response
+func respondWithError(w http.ResponseWriter, code int, message string) {
+	respondWithJSON(w, code, ServerResponse{
+		Success: false,
+		Error:   message,
+	})
+}
+
+// getEnv gets environment variable with a default fallback
+func getEnv(key, fallback string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return fallback
+}
