@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --light-purple-lilac: #e6e6fa;
+  --dark-lilac: #8b008b;
+  --light-blue: #e6f3ff;
+}
+
+body {
+  color: #333;
+  background-color: white;
+}
