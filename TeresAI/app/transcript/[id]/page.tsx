@@ -150,9 +150,7 @@ export default function TranscriptPage({ params }: { params: { id: string } }) {
               {transcript.content}
             </div>
           )}
-          {action === "draft" &&
-            transcript.status === "Pending Approval" &&
-            transcript.status !== "Recording" &&
+          { transcript.status === "Pending Approval" &&
             !isEditing && (
               <div className="mt-4">
                 <CustomButton variant="default" className="border-white" onClick={handleApprove}>
@@ -164,7 +162,7 @@ export default function TranscriptPage({ params }: { params: { id: string } }) {
         </CardContent>
         <CardFooter className="flex justify-between">
   <div className="flex space-x-2">
-    {(action === "draft" || action === undefined) && transcript.status !== "Completed" && transcript.status !== "Recording" &&
+    {(transcript.status === "Pending Approval" &&
       (isEditing ? (
         <>
           <CustomButton variant="default" className="border-white" size="sm" onClick={handleSave}>
@@ -203,9 +201,9 @@ export default function TranscriptPage({ params }: { params: { id: string } }) {
       </CustomButton>
     )}
   </div>
-  <Link href="/transcriptions">
+  <Link href="/platform">
     <CustomButton variant="outline" className="border-white">
-      Back to Transcriptions
+      Back to Platform
     </CustomButton>
   </Link>
 </CardFooter>
@@ -214,3 +212,4 @@ export default function TranscriptPage({ params }: { params: { id: string } }) {
     </main>
   )
 }
+
