@@ -189,14 +189,14 @@ export default function TranscriptPage({ params }: { params: { id: string } }) {
         </>
       ))}
 
-    {transcript.status === "Completed" && (
+    {(action !== "summary") && transcript.status === "Completed" && (
       <CustomButton variant="outline" className="border-white" size="sm" onClick={handleDownload}>
         <Download className="mr-2 h-4 w-4" />
         Download
       </CustomButton>
     )}
 
-    {transcript.status === "Recording" && (
+    {(action !== "summary") && transcript.status === "Recording" && (
       <CustomButton variant="outline" className="border-white" size="sm" onClick={handleEdit}>
         <Edit className="mr-2 h-4 w-4 border-white" />
         Edit
@@ -214,4 +214,3 @@ export default function TranscriptPage({ params }: { params: { id: string } }) {
     </main>
   )
 }
-
