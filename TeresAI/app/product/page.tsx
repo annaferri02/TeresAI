@@ -36,11 +36,11 @@ export default function ProductPage() {
           </CardHeader>
           <CardContent>
             <ul className="list-disc pl-5 space-y-2 text-white">
-              <li>Discreet design that blends with medical attire</li>
-              <li>One-touch recording activation</li>
-              <li>Secure, encrypted audio transmission</li>
-              <li>Long battery life for extended shifts</li>
-              <li>Water-resistant and easy to sanitize</li>
+              <li>Easy and precise recording, transcribing and analysing op conversations </li>
+              <li>Automatic creating of reports of the conversations</li>
+              <li>Generate set of instructions for the nurses</li>
+              <li>Safe document sharing on the Nuts Network</li>
+              <li>Wearble for easy and discreet handling of recordings, with one-touch recording activation</li>
             </ul>
           </CardContent>
         </CustomCard>
