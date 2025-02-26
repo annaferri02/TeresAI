@@ -89,14 +89,6 @@ export default function TranscriptionsPage() {
 
       {/* Pulsanti di navigazione */}
       <div className="mt-12 space-x-4">
-        <Link href="/">
-          <CustomButton
-            variant="outline"
-            className="bg-custom-lilac text-white hover:bg-white hover:text-custom-lilac border-lilac"
-          >
-            Back to Home
-          </CustomButton>
-        </Link>
         <Link href="/platform">
           <CustomButton
             variant="outline"
