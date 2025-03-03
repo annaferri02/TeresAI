@@ -17,7 +17,7 @@ type TranscriptionsStore = { // Definisce il tipo dello store
 export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
   transcriptions: [ // Inizializza l'array di trascrizioni con alcuni dati di esempio
   //Patient 1
-      { id: "1", title: "Patient Consultation - John Doe", date: "2025-02-21", status: "Completed", content: `
+      { id: "1", title: "Patient Consultation - John Doe", hours: "12:00", date: "2025-02-21", status: "Completed", content: `
         Nurse: Good afternoon, everyone. Let's begin the rounds for the Elderly Ward. We'll start with bed 1.
 
         Nurse: Good morning, Mr. Doe. How are you feeling today?
@@ -32,17 +32,16 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
 
         Nurse: Of course, I'll bring it right away.
       `,
-      patientSummary: [
-        { title: "Eating Behaviour", data: "No data recorded yet" },
-        { title: "Medicine Administration", data: "No data recorded yet" },
-        { title: "Sleep", data: "No data recorded yet" },
-        { title: "Energy", data: "No data recorded yet" },
-        { title: "Pain Complaints", data: "No data recorded yet" },
-        { title: "Stool", data: "No data recorded yet" },
-        { title: "Blood Pressure", data: "No data recorded yet" },
-        { title: "Care Goals", data: "No goals set yet" }
-      ],
-  }
+        patientSummary: [
+          { title: "Eating Behaviour", data: "Difficulty swallowing, requires liquid diet", date: "2025-02-21", hours: "12:00"},
+          { title: "Medicine Administration", data: "Refused medication, doctor informed", date: "2025-02-21", hours: "11:43" },
+          { title: "Sleep", data: "Woke up multiple times due to anxiety", date: "2025-02-21", hours: "06:30" },
+          { title: "Energy", data: "Feeling particularly fatigued today, under monitoring", date: "2025-02-21", hours: "10:15"},
+          { title: "Pain Complaints", data: "Severe back pain reported, analgesic administered", date: "2025-02-21", hours: "09:20"},
+          { title: "Stool", data: "Constipation reported, increased hydration", date: "2025-02-21", hours: "08:00" },
+          { title: "Blood Pressure", data: "Higher than usual, doctor notified", date: "2025-02-21", hours: "10:30" },
+        ],
+  },
   //Patient 2
         { id: "2", title: "Nurse Rounds - Ward 3", date: "2025-02-20", status: "Recording",  content: `
       Nurse: Good afternoon, everyone. Let's begin the rounds for the Elderly Ward. We'll start with bed 1.
@@ -74,7 +73,6 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
   { title: "Pain Complaints", data: "Pain assessment conducted for all patients" },
   { title: "Stool", data: "1 patient with catheter, 2 with adult diapers, others independent" },
   { title: "Blood Pressure", data: "Monitored and recorded for all patients" },
-  { title: "Care Goals", data: "Personalized for each patient, with a focus on fall prevention and maintaining autonomy" },
     ],
   },
 
@@ -102,7 +100,6 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "No data recorded yet" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "No data recorded yet" },
-      { title: "Care Goals", data: "No goals set yet" },
     ],
   }, 
 
@@ -134,7 +131,6 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "No data recorded yet" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "No data recorded yet" },
-      { title: "Care Goals", data: "Follow up with PCP within 1 week" },
     ],
   }, 
 
@@ -164,7 +160,7 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "Severe chest pain, radiating to left arm" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "No data recorded yet" },
-      { title: "Care Goals", data: "Urgent evaluation for possible cardiac event" },
+
     ],
   }, 
 
@@ -200,7 +196,7 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "Some pain around the incision site" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "No data recorded yet" },
-      { title: "Care Goals", data: "Gradual return to normal activities over 2-3 weeks" },
+
     ],
   },
 
@@ -236,7 +232,6 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "Ear pain, especially at night" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "No data recorded yet" },
-      { title: "Care Goals", data: "Monitor symptoms and return in 10 days if symptoms persist" },
     ],
   }, 
 
@@ -266,10 +261,6 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "Feeling really sad and hopeless" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "No data recorded yet" },
-      {
-        title: "Care Goals",
-        data: "Further evaluation needed, discuss treatment options including therapy and medication",
-      },
     ],
   }, 
 
@@ -301,7 +292,6 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "Persistent right knee pain, worse with stairs and after prolonged sitting" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "No data recorded yet" },
-      { title: "Care Goals", data: "Ordered X-ray, discuss treatment options pending results" },
     ],
   }, 
 
@@ -341,7 +331,7 @@ export const useTranscriptionsStore = create<TranscriptionsStore>((set) => ({
       { title: "Pain Complaints", data: "Some back pain" },
       { title: "Stool", data: "No data recorded yet" },
       { title: "Blood Pressure", data: "Normal" },
-      { title: "Care Goals", data: "Continue prenatal care, manage back pain" },
+
     ],
   }, 
   

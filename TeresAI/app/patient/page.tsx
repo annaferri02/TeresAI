@@ -22,13 +22,14 @@ export default function PatientPage() {
   }
 
   return (
-      <div className="flex justify-center w-full min-h-screen bg-white text-custom-lilac p-10">
-        <main className="flex flex-col items-center justify-start rounded-lg w-full max-w-5xl p-16">
-          <h1 className="text-4xl font-bold text-center text-custom-dark-purple mb-8 w-full">{patient.name}'s Dashboard</h1>
-          <div className="w-full">
-            <PatientOverview patient={patient} />
-          </div>
-        </main>
-      </div>
+    <div className="min-h-screen bg-white">
+      {/*<header className="bg-light-purple-lilac text-dark-lilac p-4">
+        <h1 className="text-2xl font-bold">TeresAI</h1>
+      </header>*/}
+      <main className="flex min-h-screen flex-col items-center justify-start p-20 bg-white text-custom-lilac">
+        <h1 className="text-4xl font-bold text-center text-custom-dark-purple">{patient.name}'s Dashboard</h1>
+        <PatientOverview patient={patient} />
+      </main>
+    </div>
   )
 }
