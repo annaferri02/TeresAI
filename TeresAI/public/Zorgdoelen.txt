@@ -1,0 +1,43 @@
+**Patiëntendossier - Zorgdoelen**
+
+**Patiëntgegevens**  
+- Naam: Jan de Vries  
+- Geboortedatum: 12-05-1948  
+- BSN: 123456789  
+- Zorginstelling: Zorgcentrum De Horizon  
+- Behandelend zorgverlener(s): Dr. M. Jansen, Verpleegkundige S. de Groot  
+
+---
+
+**Huidige Zorgdoelen**  
+1. **Doel**: Verbeteren van mobiliteit  
+   - Omschrijving: Dagelijkse loopoefeningen om spierkracht en stabiliteit te verbeteren  
+   - Startdatum: 01-02-2025  
+   - Verwachte einddatum: 01-08-2025  
+   - Status: Actief  
+   - Verantwoordelijke zorgverlener: Fysiotherapeut L. Bakker  
+   - Opmerkingen: Patiënt loopt met rollator, progressie wordt maandelijks geëvalueerd  
+
+2. **Doel**: Verbeteren van voedingsinname  
+   - Omschrijving: Stimuleren van eiwitrijke voeding en voldoende vochtinname  
+   - Startdatum: 15-01-2025  
+   - Verwachte einddatum: 15-07-2025  
+   - Status: Actief  
+   - Verantwoordelijke zorgverlener: Diëtist E. van Dijk  
+   - Opmerkingen: Voedingsdagboek wordt bijgehouden, patiënt heeft voorkeur voor zachte voeding  
+
+---
+
+**Evaluatie en Voortgang**  
+- Datum evaluatie: 15-02-2025  
+- Beoordeling voortgang: Mobiliteit verbetert licht, voedingsinname is stabiel  
+- Aanpassingen zorgdoelen: Geen aanpassingen nodig op dit moment  
+- Nieuwe zorgdoelen toegevoegd: Nee  
+- Opmerkingen: Patiënt blijft gemotiveerd en houdt zich goed aan de adviezen  
+
+---
+
+**Historie Zorgdoelen**  
+- 01-10-2024: Zorgdoel "Verbeteren van slaappatroon" afgerond, patiënt slaapt gemiddeld 7 uur per nacht  
+- 15-06-2024: Zorgdoel "Verminderen van valrisico" aangepast, patiënt gebruikt nu een stevigere rollator
+

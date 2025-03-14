@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link"
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FileAudio, FileText, Settings } from "lucide-react"
+import { useState } from "react";
 
 export default function PlatformPage() {
   // Lista dei pazienti con ID
@@ -11,6 +14,24 @@ export default function PlatformPage() {
     { id: 3, name: "Robert Johnson" },
     { id: 4, name: "Emily Brown" }
   ]
+
+  const [instructions, setInstructions] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const fetchInstructions = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/instructions");;
+      const data = await response.json();
+      setInstructions(data.instructions); // Update state with AI-generated instructions
+    } catch (error) {
+      console.error("Error fetching instructions:", error);
+      setInstructions("Er is een fout opgetreden bij het ophalen van instructies.");
+    }
+    setLoading(false);
+  };
+
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24 bg-white text-custom-lilac">
@@ -37,9 +58,11 @@ export default function PlatformPage() {
                       variant="outline"
                       size="sm"
                       className="w-full border-white text-white hover:bg-custom-lilac hover:text-white"
+                      onClick={fetchInstructions}
                     >
-                      Instructions
+                      Generate Instructions
                     </CustomButton>
+                    <p id="instructions-field">{loading ? "Loading..." : instructions}</p>
                   </div>
                 </li>
               ))}
