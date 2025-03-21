@@ -1,0 +1,17 @@
+#Defines Go module and its dependencies Similar to package.json in a Node.js project
+#Lists external packages your code depends on Controls versioning of dependencies
+# Server configuration
+PORT=8080
+
+# Nuts Network Nodes
+NUTS_NODE1_URL=https://nuts-node1.example.com
+NUTS_NODE1_API_KEY=your_api_key_here
+NUTS_NODE1_PUBLIC_KEY=your_public_key_here
+
+NUTS_NODE2_URL=https://nuts-node2.example.com
+NUTS_NODE2_API_KEY=your_api_key_here
+NUTS_NODE2_PUBLIC_KEY=your_public_key_here
+
+# Security Keys (change these to strong random values in production)
+ENCRYPTION_KEY=random_strong_encryption_key_min_32_chars
+SIGNING_KEY=random_strong_signing_key_min_32_chars
