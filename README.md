@@ -56,10 +56,10 @@ However, you can use the following test credentials to log in and explore the pl
 Access to protected pages like `/platform` and `/profile` requires authentication. Once logged in, you'll be able to view assigned patients, manage visits, and more.
 
 ## 👥 Contributors
-- **Anna Ferri**
+- **[Anna Ferri](https://github.com/annaferri02)**
 - **Jacob Wohsmann**
 - **Nina Fang**
-- **Robert Verbeeten**
+- **[Robert Verbeeten](https://github.com/RobVer)**
 
 ## 📄 License
 **MIT** — *feel free to use, fork, and build upon this project.*
