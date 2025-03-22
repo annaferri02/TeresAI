@@ -9,7 +9,7 @@ import SessionWrapper from "../components/SessionWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HealthCare Audio Pin",
+  title: "TeresAI",
   description: "Smart Recording, Smarter Care",
   generator: "v0.dev",
 };
