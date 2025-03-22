@@ -14,12 +14,11 @@ export async function POST(req: Request) {
 
     // Connect to MySQL Database
     const connection = await mysql.createConnection({
-      host: "teresaidatabase.ctm246cyik1y.eu-north-1.rds.amazonaws.com", // Change if needed
-      user: "admin", // Your database user
-      password: "teresai!", // Your database password
-      database: "DatabaseSBE", // Your database name
-      port: 3306,
-    });
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+      });
 
     console.log("Connected to database!");
 
