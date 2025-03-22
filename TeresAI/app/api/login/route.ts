@@ -14,9 +14,9 @@ export async function POST(req: Request) {
 
     // Connect to MySQL Database
     const connection = await mysql.createConnection({
-      host: "localhost", // Change if needed
-      user: "root", // Your database user
-      password: "Anna2002", // Your database password
+      host: "teresaidatabase.ctm246cyik1y.eu-north-1.rds.amazonaws.com", // Change if needed
+      user: "admin", // Your database user
+      password: "teresai!", // Your database password
       database: "DatabaseSBE", // Your database name
       port: 3306,
     });
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     console.log("Connected to database!");
 
     // Query user by email
-    const [rows]: any = await connection.execute("SELECT * FROM user WHERE email = ?", [email]);
+    const [rows]: any = await connection.execute("SELECT * FROM users WHERE email = ?", [email]);
 
     await connection.end();
     
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     console.log("actual password ", user.password);
 
     // Compare passwords
-    const isMatch = password === user.password;
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       console.log("Invalid credentials.");
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });

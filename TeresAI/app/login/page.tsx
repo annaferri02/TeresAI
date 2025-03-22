@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react"; // ✅ Add this
 import Link from "next/link";
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles";
 import { CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -16,38 +17,18 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // Reset error messages
+    setError("");
 
-    if (!email || !password) {
-      setError("Email and password are required");
-      return;
-    }
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
 
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Login failed");
-        return;
-      }
-
-      console.log("Login successful:", data);
-
-      // Store user info in localStorage (or a better approach like context/auth provider)
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      // Redirect to platform/dashboard
-      router.push("/platform");
-    } catch (error) {
-      setError("Something went wrong. Please try again.");
+    if (res?.error) {
+      setError("Invalid email or password");
+    } else {
+      router.push("/platform"); // 👈 Redirect on successful login
     }
   };
 
@@ -64,7 +45,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="nome@esempio.com"
+                placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -91,7 +72,7 @@ export default function LoginPage() {
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Link href="/page.tsx" className="text-white hover:underline text-sm">Back Home</Link>
+          <Link href="/" className="text-white hover:underline text-sm">Back Home</Link>
         </CardFooter>
       </CustomCard>
     </main>

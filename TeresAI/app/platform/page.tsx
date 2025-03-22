@@ -2,15 +2,29 @@ import Link from "next/link"
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FileAudio, FileText, Settings, Mic } from "lucide-react"
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+import mysql from "mysql2/promise";
 
-export default function PlatformPage() {
-  // Lista dei pazienti con ID
-  const patients = [
-    { id: 1, name: "Reijnder Gravenberg" },
-    {id: 2, name: "Dorothy Miller"},
-    {id: 3, name: "George Carmichael"},
-    {id:4, name: "Margaret Collins"}
-  ]
+export default async function PlatformPage() {
+  const session = await getServerSession(authOptions);
+  console.log("SESSION:", session);
+  if (!session) {
+    redirect("/login");
+  }
+
+  const db = await mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  });
+
+  const [patients] = await db.execute(
+    "SELECT * FROM patients WHERE caretaker_email = ?",
+    [session.user.email]
+  );
 
   return (
       <main className="flex min-h-screen flex-col items-center justify-start p-24 bg-white text-custom-lilac">
@@ -54,7 +68,7 @@ export default function PlatformPage() {
                             className="block mb-2"
                         >
                       <span className="w-full text-white group-hover:text-custom-lilac">
-                        {patient.name}
+                        {patient.name} {patient.surname}
                       </span>
                         </Link>
                         <CustomButton
@@ -69,6 +83,11 @@ export default function PlatformPage() {
                 ))}
               </ul>
             </CardContent>
+            <Link href={`/patients`}>
+              <CustomButton variant="outline" size="sm" className="w-full border-white text-white group-hover:bg-custom-lilac group-hover:text-white">
+                All Patients
+              </CustomButton>
+            </Link>
           </CustomCard>
 
           {/* Card dei report da approvare */}
@@ -85,7 +104,7 @@ export default function PlatformPage() {
                     <li key={patient.id}>
                       <Link href={`/transcript/${patient.id}`}>
                         <CustomButton variant="outline" className="w-full justify-start border-white">
-                          Approve {patient.name}'s Report
+                          Approve {patient.name} {patient.surname}'s Report
                         </CustomButton>
                       </Link>
                     </li>

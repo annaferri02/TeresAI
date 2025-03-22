@@ -1,6 +1,9 @@
+'use client';
+
 import Link from "next/link" // Importa il componente Link per la navigazione
 import {CustomButton, CustomCard} from "@/components/ui/custom-styles"
 import {CardContent, CardHeader, CardTitle} from "@/components/ui/card"; // Importa il pulsante personalizzato
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Home() {
     return (
@@ -21,9 +24,8 @@ export default function Home() {
 
                     {/* Pulsante "Learn More" che porta alla pagina del prodotto */}
                     <Link href="/login">
-                        <CustomButton size="lg">Login</CustomButton>
+                      <CustomButton size="lg">Login</CustomButton>
                     </Link>
-
                 </div>
             </div>
 
