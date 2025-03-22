@@ -1,5 +1,5 @@
 # TeresAI
-Smart Recording, Smarter Care – a platform for elderly care staff to manage patients, view assignments, and securely log in.
+Smart Recording, Smarter Care – a platform for elderly care staff to manage patients and automatically generate care reports using [VerticAI’s](https://www.verticai.nl/) AI-powered transcription and summarization capabilities.
 
 
 ## 🚀 Tech Stack
@@ -62,3 +62,4 @@ Access to protected pages like `/platform` and `/profile` requires authenticatio
 - **Robert Verbeeten**
 
 ## 📄 License
+**MIT** — *feel free to use, fork, and build upon this project.*
