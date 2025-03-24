@@ -64,7 +64,7 @@ export default async function PlatformPage() {
                     <li key={patient.id}>
                       <div className="group w-full border border-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
                         <Link
-                            href={`/patient/${patient.name.toLowerCase().replace(" ", "-")}`}
+                            href={`/patient/${patient.id + "-" + patient.name + "-" + patient.surname}`}
                             className="block mb-2"
                         >
                       <span className="w-full text-white group-hover:text-custom-lilac">
