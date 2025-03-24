@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileAudio, FileText, Settings, Mic } from "lucide-react"
+import { FileAudio, FileText, Settings, Mic, Clock } from "lucide-react"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -29,7 +29,7 @@ export default async function PlatformPage() {
   return (
       <main className="flex min-h-screen flex-col items-center justify-start p-24 bg-white text-custom-lilac">
 
-        <div className="grid grid-cols-3 items-center mb-8 w-full max-w-4xl">
+        <div className="grid grid-cols-3  mb-8 w-full max-w-4xl">
           {/* Colonna vuota per lasciare centrato il titolo */}
           <div></div>
 
@@ -39,17 +39,12 @@ export default async function PlatformPage() {
           </div>
 
           {/* Bottone Recording a destra */}
-          <div className="flex justify-end">
-            <CustomButton variant="outline" className="flex items-center">
-              <Mic className="mr-1" />
-              Recording
-            </CustomButton>
-          </div>
+          <div></div>
         </div>
 
 
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
           {/* Card delle visite pazienti */}
           <CustomCard>
             <CardHeader>
@@ -62,32 +57,24 @@ export default async function PlatformPage() {
               <ul className="space-y-4">
                 {patients.map((patient) => (
                     <li key={patient.id}>
-                      <div className="group w-full border border-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
                         <Link
                             href={`/patient/${patient.id + "-" + patient.name + "-" + patient.surname}`}
                             className="block mb-2"
                         >
-                      <span className="w-full text-white group-hover:text-custom-lilac">
-                        {patient.name} {patient.surname}
-                      </span>
+                        <span className="w-full text-custom-lilac font-medium">
+                          {patient.name} {patient.surname}
+                        </span>
                         </Link>
-                        <CustomButton
-                            variant="outline"
-                            size="sm"
-                            className="w-full border-white text-white group-hover:bg-custom-lilac group-hover:text-white"
-                        >
-                          Instructions
+                        <CustomButton variant="outline" className="w-full justify-start border-white text-center">
+                          <Mic className="mr-1" />
+                          Start New Report
                         </CustomButton>
                       </div>
                     </li>
                 ))}
               </ul>
             </CardContent>
-            <Link href={`/patients`}>
-              <CustomButton variant="outline" size="sm" className="w-full border-white text-white group-hover:bg-custom-lilac group-hover:text-white">
-                All Patients
-              </CustomButton>
-            </Link>
           </CustomCard>
 
           {/* Card dei report da approvare */}
@@ -113,32 +100,16 @@ export default async function PlatformPage() {
             </CardContent>
           </CustomCard>
 
-          {/* Card delle impostazioni */}
-          <CustomCard className="col-span-1 md:col-span-2">
+          <CustomCard>
             <CardHeader>
               <CardTitle className="flex items-center text-white text-custom-dark-purple">
-                <Settings className="mr-2" />
-                Settings
+              <Clock className="mr-2" />
+                Previous Reports
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <CustomButton variant="outline" className="border-white">
-                  Manage Users
-                </CustomButton>
-                <CustomButton variant="outline" className="border-white">
-                  Transcription Templates
-                </CustomButton>
-                <CustomButton variant="outline" className="border-white">
-                  Integration Settings
-                </CustomButton>
-                <CustomButton variant="outline" className="border-white">
-                  Privacy Controls
-                </CustomButton>
-              </div>
-            </CardContent>
           </CustomCard>
         </div>
+
 
         {/* Pulsanti di navigazione */}
         <div className="mt-12 space-x-4">
