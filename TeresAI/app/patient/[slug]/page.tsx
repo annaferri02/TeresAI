@@ -3,6 +3,7 @@ import mysql from "mysql2/promise";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
+import db from "@/lib/db";
 
 interface PageProps {
   params: {
@@ -18,19 +19,12 @@ export default async function PatientPage({ params }: PageProps) {
   }
 
   const [id] = params.slug.split('-');
-
-  const db = await mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-  });
   
   const [rows] = await db.execute(
     "SELECT * FROM patients WHERE id = ?",
     [id]
   );
-  
+
   const person = rows[0];
 
   // Hardcoded data except for Name, Age and Gender

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import {CustomButton} from "@/components/ui/custom-styles"
 import { signOut } from 'next-auth/react';
 import mysql from "mysql2/promise";
+import db from "@/lib/db";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -11,13 +12,6 @@ export default async function ProfilePage() {
   if (!session || !session.user) {
     redirect("/login");
   }
-
-  const db = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-  });
 
   const email = session.user.email;
   

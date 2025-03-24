@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import mysql from "mysql2/promise";
+import db from "@/lib/db";
 
 export default async function PlatformPage() {
   const session = await getServerSession(authOptions);
@@ -13,13 +14,6 @@ export default async function PlatformPage() {
   if (!session) {
     redirect("/login");
   }
-
-  const db = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
 
   const [patients] = await db.execute(
     "SELECT * FROM patients WHERE caretaker_email = ?",
