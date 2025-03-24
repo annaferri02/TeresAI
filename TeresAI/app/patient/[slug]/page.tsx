@@ -1,5 +1,8 @@
 import { PatientOverview } from "@/components/patient-overview"
 import mysql from "mysql2/promise";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 interface PageProps {
   params: {
@@ -8,6 +11,12 @@ interface PageProps {
 }
 
 export default async function PatientPage({ params }: PageProps) {
+  const session = await getServerSession(authOptions);
+  
+  if (!session || !session.user) {
+    redirect("/login");
+  }
+
   const [id] = params.slug.split('-');
 
   const db = await mysql.createConnection({
@@ -21,6 +30,7 @@ export default async function PatientPage({ params }: PageProps) {
     "SELECT * FROM patients WHERE id = ?",
     [id]
   );
+  
   const person = rows[0];
 
   // Hardcoded data except for Name, Age and Gender

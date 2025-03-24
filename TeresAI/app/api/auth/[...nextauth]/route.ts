@@ -30,7 +30,6 @@ export const authOptions = {
 
         if (user && await bcrypt.compare(credentials!.password, user.password)) {
           return {
-            id: user.id,
             email: user.email,
             role: user.role,
             created_at: user.created_at,
@@ -46,11 +45,19 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.email = user.email;
+      if (user) {
+        token.email = user.email;
+        token.role = user.role;
+        token.created_at = user.created_at;
+      }
       return token;
     },
     async session({ session, token }) {
-      session.user.email = token.email;
+      if (session.user) {
+        session.user.email = token.email;
+        session.user.role = token.role;
+        session.user.created_at = token.created_at;
+      }
       return session;
     },
   },
