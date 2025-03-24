@@ -3,6 +3,7 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import {CustomButton} from "@/components/ui/custom-styles"
 import { signOut } from 'next-auth/react';
+import mysql from "mysql2/promise";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -11,7 +12,22 @@ export default async function ProfilePage() {
     redirect("/login");
   }
 
-  const { email, role, created_at } = session.user;
+  const db = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+  });
+
+  const email = session.user.email;
+  
+  const [rows] = await db.execute(
+    "SELECT role, created_at FROM users WHERE email = ?",
+    [session.user.email]
+  );
+
+  const user = rows[0];
+  const created = new Date(user.created_at).toLocaleString();
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-white p-8 text-custom-lilac">
@@ -22,6 +38,14 @@ export default async function ProfilePage() {
           <div>
             <p className="text-sm text-gray-500">Email</p>
             <p className="text-lg font-medium">{email}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Role</p>
+            <p className="text-lg font-medium">{user.role}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">User since</p>
+            <p className="text-lg font-medium">{created}</p>
           </div>
           <form action="/api/auth/signout" method="POST">
             <CustomButton

@@ -12,17 +12,17 @@ export default async function ProfilePage() {
     redirect("/login");
   }
 
-    const db = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-    });
+  const db = await mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  });
   
-    const [patients] = await db.execute(
-      "SELECT * FROM patients WHERE caretaker_email = ?",
-      [session.user.email]
-    );
+  const [patients] = await db.execute(
+    "SELECT * FROM patients WHERE caretaker_email = ?",
+    [session.user.email]
+  );
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-white p-8 text-custom-lilac">
