@@ -1,13 +1,33 @@
-"use client";
-
 import { PatientOverview } from "@/components/patient-overview"
+import mysql from "mysql2/promise";
 
-export default function PatientPage() {
-  // Hardcoded data for Reijnder Gravenberg
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function PatientPage({ params }: PageProps) {
+  const [id] = params.slug.split('-');
+
+  const db = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+  });
+  
+  const [rows] = await db.execute(
+    "SELECT * FROM patients WHERE id = ?",
+    [id]
+  );
+  const person = rows[0];
+
+  // Hardcoded data except for Name, Age and Gender
   const patient = {
-    name: "Reijnder Gravenberg",
-    age: 65,
-    gender: "Male",
+    name: person.name + " " + person.surname,
+    age: person.age,
+    gender: person.gender,
     intolerances: ["Lactose", "Gluten"],
     allergies: ["Peanuts", "Penicillin"],
     dislikes: ["Broccoli", "Loud noises"],
@@ -20,6 +40,8 @@ export default function PatientPage() {
       { type: "Sleep", id: "6", date: "2023-05-10", approved: false },
     ],
   }
+
+
 
   return (
       <div className="flex justify-center w-full min-h-screen bg-white text-custom-lilac p-10">
