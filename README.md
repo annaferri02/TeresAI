@@ -56,9 +56,9 @@ However, you can use the following test credentials to log in and explore the pl
 Access to protected pages like `/platform` and `/profile` requires authentication. Once logged in, you'll be able to view assigned patients, manage visits, and more.
 
 Other accounts that do not currently have any functionality are:
-- **Email: `doctor@example.com` Password: `doctor123`**
-- **Email: `psychologist@example.com` Password: `psych123`**
-- **Email: `admin@example.com` Password: `admin123`**
+- **Email:** `doctor@example.com` **Password:** `doctor123`
+- **Email:** `psychologist@example.com` **Password:** `psych123`
+- **Email:** `admin@example.com` **Password:** `admin123`
 
 ## 👥 Contributors
 - **[Anna Ferri](https://github.com/annaferri02)**
