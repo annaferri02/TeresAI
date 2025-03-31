@@ -23,7 +23,7 @@ export default async function PlatformPage() {
   return (
       <main className="flex min-h-screen flex-col items-center justify-start p-24 bg-white text-custom-lilac">
 
-        <div className="grid grid-cols-3  mb-8 w-full max-w-4xl">
+        <div className="md:grid-cols-3 mb-8 w-full max-w-6xl grid grid-cols-1">
           {/* Colonna vuota per lasciare centrato il titolo */}
           <div></div>
 
@@ -33,7 +33,11 @@ export default async function PlatformPage() {
           </div>
 
           {/* Bottone Recording a destra */}
-          <div></div>
+          <div className="flex justify-end">
+            <CustomButton variant="outline" className="items-center">
+              <Mic className="mr" />
+            </CustomButton>
+          </div>
         </div>
 
 
@@ -60,7 +64,7 @@ export default async function PlatformPage() {
                           {patient.name} {patient.surname}
                         </span>
                         </Link>
-                        <CustomButton variant="outline" className="w-full justify-start border-white text-center">
+                        <CustomButton variant="outline" className="w-justify justify-center border-white text-center">
                           <Mic className="mr-1" />
                           Start New Report
                         </CustomButton>
@@ -95,12 +99,38 @@ export default async function PlatformPage() {
           </CustomCard>
 
           <CustomCard>
-            <CardHeader>
-              <CardTitle className="flex items-center text-white text-custom-dark-purple">
-              <Clock className="mr-2" />
+          <CardHeader>
+            <CardTitle className="text-white text-custom-dark-purple">
+              <Link
+                href={`/handover`}
+                className="flex items-center"
+              >
+                <Clock className="mr-2" />
                 Previous Reports
-              </CardTitle>
-            </CardHeader>
+              </Link>
+            </CardTitle>
+          </CardHeader>
+
+
+                      <CardContent>
+              <ul className="space-y-4">
+                {patients.map((patient) => (
+                    <li key={patient.id}>
+                      <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                        <Link
+                            href={`/previous_report/${patient.id}`}
+                            className="block mb-2"
+                        >
+                        <span className="w-full text-custom-lilac font-medium">
+                          {patient.name} {patient.surname}
+                          <p className="text-sm">2021-02-25 10:45</p>
+                        </span>
+                        </Link>
+                      </div>
+                    </li>
+                ))}
+              </ul>
+            </CardContent>
           </CustomCard>
         </div>
 
