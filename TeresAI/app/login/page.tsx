@@ -68,12 +68,13 @@ export default function LoginPage() {
 
             {error && <p className="text-white bg-red-500 p-2 rounded-md text-sm">{error}</p>}
 
-            <CustomButton type="submit" className="w-full text-lg">Login</CustomButton>
+            <CustomButton type="submit" className="w-full"  size="lg">Login</CustomButton>
+              <Link href="/">
+              <CustomButton className="w-full" size="lg">Back Home</CustomButton>
+              </Link>
+            
           </form>
         </CardContent>
-        <CardFooter className="flex justify-center">
-          <Link href="/" className="text-white hover:underline text-sm">Back Home</Link>
-        </CardFooter>
       </CustomCard>
     </main>
   );
