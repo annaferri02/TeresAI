@@ -12,38 +12,46 @@ interface PageProps {
   };
 }
 
+async function callAiProcessingAPI() {
+  const response = await fetch('/api/ai-processing', {
+    method: 'POST', // or 'GET' if your route is GET-based
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      message: 'hello world', // replace with your actual payload
+    }),
+  });
+
+  const data = await response.json();
+  console.log('Response:', data);
+}
+
+
 export default async function TrendPage({ params }: PageProps) {
-  const trends = [
-    {
-      direction: "increase",
-      description: "Mr Gravenberg mentioned pain-related words 40% more today compared to yesterday",
-      emoji: "😟",
-    },
-    {
-      direction: "decrease",
-      description: "Mr Gravenberg talked about sleep-loss related themes 25% percent less",
-      emoji: "😴",
-    },
-    {
-      direction: "decrease",
-      description: "The patient did not mention his family for 2 days now",
-      emoji: "👪",
-    },
-  ]
+  
 
   const slug = params.slug as string;
 
   // Assuming the format is always "id-firstname-lastname"
   const [id, firstName, lastName] = slug.split('-');
-  console.log(id)
   const [reports] = await db.execute(
-    "SELECT * FROM reports WHERE id_patient = ?",
+    "SELECT content FROM reports WHERE id_patient = ?",
     [id]
   );
+  
 
-  const report = reports[0]
-
-  console.log(report)
+  const answer = await fetch('http://localhost:3000/api/ai-processing', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ files: reports }),
+  });
+  const data = await answer.json();
+  const trends = data.results;
+  
+  
 
   return (
     <div className="min-h-screen bg-white">
