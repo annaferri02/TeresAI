@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { TrendingUp, TrendingDown, TrendingUpDown } from "lucide-react"
 import Link from "next/link";
 import {CustomButton, CustomCard} from "@/components/ui/custom-styles";
@@ -27,10 +30,7 @@ async function callAiProcessingAPI() {
   console.log('Response:', data);
 }
 
-
 export default async function TrendPage({ params }: PageProps) {
-  
-
   const slug = params.slug as string;
 
   // Assuming the format is always "id-firstname-lastname"
@@ -40,18 +40,35 @@ export default async function TrendPage({ params }: PageProps) {
     [id]
   );
   
+  // UPDATED CODE SECTION STARTS HERE
+  let trends = [];
+  try {
+    const answer = await fetch('http://localhost:3000/api/ai-processing', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ files: reports }),
+    });
 
-  const answer = await fetch('http://localhost:3000/api/ai-processing', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ files: reports }),
-  });
-  const data = await answer.json();
-  const trends = data.results;
-  
-  
+    if (!answer.ok) {
+      console.error(`API responded with status: ${answer.status}`);
+      throw new Error(`API error: ${answer.status}`);
+    }
+
+    const data = await answer.json();
+    console.log("API response data:", data); // Debug log
+    
+    // Make sure trends is always an array
+    trends = Array.isArray(data.results) ? data.results : [];
+  } catch (error) {
+    console.error("Error processing trends:", error);
+    // Provide fallback data
+    trends = [
+      { direction: "neutral", description: "Error loading trends. Please try again later.", emoji: "⚠️" }
+    ];
+  }
+  // UPDATED CODE SECTION ENDS HERE
 
   return (
     <div className="min-h-screen bg-white">
