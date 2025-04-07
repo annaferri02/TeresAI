@@ -1,11 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { FileText, Users, TrendingUp } from "lucide-react"
+import { FileText, Users, TrendingUp, PlusCircle } from "lucide-react"
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useParams } from 'next/navigation';
-
 
 type Report = {
   type: string
@@ -26,6 +25,7 @@ type Patient = {
 
 export function PatientOverview({ patient }: { patient: Patient }) {
   const params = useParams();
+  const slug = params.slug as string;
 
   return (
       <main className="flex min-h-screen flex-col items-center justify-start p-5 text-custom-lilac">
@@ -62,14 +62,21 @@ export function PatientOverview({ patient }: { patient: Patient }) {
               </p>
             </CardContent>
           </CustomCard>
-
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-6 w-full max-w-full mt-6">
           {/* Reports - Full Width */}
           <CustomCard className="col-span-6 shadow-lg">
             <CardHeader>
-              <CardTitle className="text-custom-dark-purple">Reports</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-custom-dark-purple">Reports</CardTitle>
+                <Link href={`/patient/${slug}/reports/new`}>
+                  <CustomButton className="bg-green-500 hover:bg-green-600 text-white">
+                    <PlusCircle className="w-4 h-4 mr-2" />
+                    Submit Report
+                  </CustomButton>
+                </Link>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">

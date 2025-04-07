@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileAudio, FileText, Settings, Mic, Clock } from "lucide-react"
+import { FileAudio, FileText, Settings, Mic, Clock, Plus } from "lucide-react"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -39,8 +39,6 @@ export default async function PlatformPage() {
             </CustomButton>
           </div>
         </div>
-
-
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
           {/* Card delle visite pazienti */}
@@ -98,42 +96,166 @@ export default async function PlatformPage() {
             </CardContent>
           </CustomCard>
 
+          {/* Card Handovers - UPDATED SECTION */}
           <CustomCard>
-          <CardHeader>
-            <CardTitle className="text-white text-custom-dark-purple">
-              <Link
-                href={`/handover`}
-                className="flex items-center"
-              >
-                <Clock className="mr-2" />
-                Previous Reports
-              </Link>
-            </CardTitle>
-          </CardHeader>
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-white text-custom-dark-purple">
+                  <Link href={`/handover`} className="flex items-center">
+                    <Clock className="mr-2" />
+                    Handovers
+                  </Link>
+                </CardTitle>
+                <Link href="/newhandover">
+                  <CustomButton 
+                    className="bg-white text-custom-lilac border-white hover:bg-gray-100 px-2 py-1 h-8 text-sm"
+                  >
+                    <Plus className="mr-1" size={14} />
+                    New Handover
+                  </CustomButton>
+                </Link>
+              </div>
+            </CardHeader>
 
+            <CardContent>
+              <div className="h-[500px] overflow-y-auto pr-2">
+                <ul className="space-y-4">
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/morning-09-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Morning Handover <span className="ml-1">☁️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(09/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
 
-                      <CardContent>
-              <ul className="space-y-4">
-                {patients.map((patient) => (
-                    <li key={patient.id}>
-                      <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                        <Link
-                            href={`/previous_report/${patient.id}`}
-                            className="block mb-2"
-                        >
-                        <span className="w-full text-custom-lilac font-medium">
-                          {patient.name} {patient.surname}
-                          <p className="text-sm">2021-02-25 10:45</p>
-                        </span>
-                        </Link>
-                      </div>
-                    </li>
-                ))}
-              </ul>
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/evening-08-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Evening Handover <span className="ml-1">🌙</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(08/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/noon-08-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Noon Handover <span className="ml-1">☀️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(08/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/morning-08-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Morning Handover <span className="ml-1">☁️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(08/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/evening-07-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Evening Handover <span className="ml-1">🌙</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(07/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/noon-07-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Noon Handover <span className="ml-1">☀️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(07/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/morning-07-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Morning Handover <span className="ml-1">☁️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(07/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/evening-06-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Evening Handover <span className="ml-1">🌙</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(06/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/noon-06-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Noon Handover <span className="ml-1">☀️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(06/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/morning-06-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Morning Handover <span className="ml-1">☁️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(06/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/evening-05-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Evening Handover <span className="ml-1">🌙</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(05/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
+                      <Link href={`/handovers/morning-05-04-2025`} className="block">
+                        <div className="w-full text-custom-lilac font-medium mb-2">
+                          Morning Handover <span className="ml-1">☁️</span>
+                        </div>
+                        <div className="text-sm text-gray-500">(05/04/2025)</div>
+                      </Link>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </CardContent>
           </CustomCard>
         </div>
-
 
         {/* Pulsanti di navigazione */}
         <div className="mt-12 space-x-4">
