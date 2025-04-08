@@ -25,41 +25,68 @@ export async function POST(req) {
     // Prepare prompt with stronger JSON formatting guidance
     const prompt = `
       
-      You are a data analyst assistant. Based on the following list of JSON reports, identify trends.
-      For each report, summarize whether there is an increase or decrease in key metrics, give a short description, and include an emoji.
-      By this, I mean you should count the words related to these themes: pain, mood, medication, nutrition, and sleep. 
-      Please report on the increase or decrease of word occurence in percentage by comparing between the reports (e.g. There was a 40% increase in sleep related words, please inquire on his sleep quality).
-      Please dedicate one printing line for each of these themes. 
-      Also, please conduct these analyses seperately these 3 forms for scripts: 1) conversation transcript 2) mental health report 3)phyiscal examination.
-      This means that the trends should only be generated from comparing conversation transcript with the other conversation transcript,
-      mental health report with mental health report, physical exam with physical exam.
+      You are a meticulous data analysis assistant. Your task is to analyze a series of reports provided in JSON format and identify trends in the occurrence of specific word categories over time.
+
+      **Workflow:**
+
+      1.  **Identify Report Types:** First, carefully examine each report and categorize it as one of the following: "conversation transcript", "mental health report", or "physical examination".
+
+      2.  **Sort by Date:** For each category of report, read the date at the beginning of each document and arrange them chronologically from oldest to newest.
+
+      3.  **Analyze the Latest Two:** For each report category, focus specifically on the **second to last** report and the **very latest** report.
+
+      4.  **Word Counting:** For the two conversation transcript reports, count the occurrences of words related to the following themes:
+          * **Pain:** (e.g., pain, ache, sore, discomfort, hurting)
+          * **Mood:** (e.g., happy, sad, anxious, calm, joyful, depressed)
+          * **Medication:** (e.g., medicine, drug, tablet, capsule, dose, prescription)
+          * **Nutrition:** (e.g., food, eat, diet, meal, hungry, thirsty)
+          * **Sleep:** (e.g., sleep, tired, rested, insomnia, nap, awake)
+
+      4.1.  **Trend Calculation:** Compare the word counts for each theme between the second to last and the latest report within each category. Calculate the percentage increase or decrease. For example:
+          * If "pain" words went from 5 in the second to last report to 10 in the latest, that's a 100% increase.
+          * If "sleep" words went from 8 to 6, that's a 25% decrease.
       
-      * IMPORTANT: Please include 4 trends for the conversation transcripts, 2 for the mental health reports and 2 for the physical exam. Therefore no more than 8 trends in total
-      Also, Always start each trend with a label for from what report it originated, e.g.: CONVERSATION TRANSCRIPT: ... , MENTAL HEALTH REPORT: ... , PHYSICAL EXAMINATION: ... *
+      5. **DIRECT ANALYSIS:** For the Mental Health Report and the Physical examination, you should display the trends more directly. Do not do word counting, like you do for the conversation transcripts, instead note what the psychologist or the physiotherapist noted in their report compared to their previous report.
+
+      6.  **JSON Output:** You MUST respond with ONLY a valid JSON array containing objects with the following exact fields for each identified trend:
+          * \`"report_type"\`: (e.g., "CONVERSATION TRANSCRIPT", "MENTAL HEALTH REPORT", "PHYSICAL EXAMINATION")
+          * \`"theme"\`: (e.g., "pain", "mood", "medication", "nutrition", "sleep")
+          * \`"direction"\`: ("increase" or "decrease")
+          * \`"percentage_change"\`: (the calculated percentage as a number, e.g., 36)
+          * \`"description"\`: A short, informative description of the trend (e.g., "Pain-related words show an increase of 36% from the last report, please inquire with the patient.")
+          * \`"emoji"\`: A relevant emoji (e.g., "🤕" for pain, "😊" for mood, "💊" for medication, "🍎" for nutrition, "😴" for sleep).
+
+      7.  **Trend Limits:** Generate **four** trends for "conversation transcripts", **two** trends for "mental health reports", and **two** trends for "physical examinations" (total of no more than 8 trends).
+
+      8. **Trend suggestions:** After stating percentage increase or decrease for the conversation transcript trends. Try to include one sentence in the description that suggest to the nurse to pay closer attention or apply special treatment to the patient, related to the percentage development.
       
 
-      *** VERY IMPORTANT: You MUST respond with ONLY a valid JSON array containing objects with these exact fields: "direction", "description", and "emoji". No explanations, no other text. ***
+      9.  **Temporal Order:** Ensure your analysis always compares the **second most recent** report to the **most recent** report within each category.
 
-      ***ç** MOST IMPORTANT: ALWAYS read the date at the beginning of each file. This trend analysis should keep its temporal order.
-      That means that you always analyse the development from the second most recent file to the most recent file.
-      E.g.: Morning conversation today had 6 pain related words, Evening conversation today had 10 related words = increase in pain related words trend generated.*****
+      10. **Concise:** Do not write too much for these trends, as they should be easily readable, never write more than 25 words per trend.
 
-      Example of valid response format:
+      **Example of valid response format:**
+      \`\`\`json
       [
         {
+          "report_type": "CONVERSATION TRANSCRIPT",
+          "theme": "pain",
           "direction": "increase",
-          "description": "Short description of trend",
-          "emoji": "🛌" 
+          "percentage_change": 36,
+          "description": "CONVERSATION REPORT: Pain-related words show an increase of 36% from the last report, please check with the patient for potential wounds or injuries.",
+          "emoji": "🤕"
         },
         {
+          "report_type": "MENTAL HEALTH REPORT",
+          "theme": "mood",
           "direction": "decrease",
-          "description": "Another trend description",
-          "emoji": "💊"
+          "percentage_change": 15,
+          "description": "MENTAL HEALTH REPORT: Words related to mood have decreased by 15% since the previous mental health report.",
+          "emoji": "😞"
         }
       ]
+      \`\`\`
 
-      For the "emoji" field, choose a relevant emoji that represents the theme (like 😴 for sleep, 💊 for medication, 😊 for mood, etc.). Make sure to include the emoji directly as a string value in the JSON without any special formatting or comments.
-      
       Here are the reports:
       ${JSON.stringify(files, null, 2)}
     `;
