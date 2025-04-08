@@ -77,7 +77,7 @@ export default async function TrendPage({ params }: PageProps) {
       </header>*/}
       <main className="flex min-h-screen flex-col items-center justify-start p-24 bg-white text-custom-lilac ">
         
-          <CustomCard>
+          <CustomCard className="max-w-4xl">
             <CardHeader>
               <CardTitle className="flex items-center text-white text-custom-dark-purple gap-1"><TrendingUpDown />Trends</CardTitle>
             </CardHeader>

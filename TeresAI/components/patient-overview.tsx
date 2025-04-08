@@ -129,20 +129,20 @@ export function PatientOverview({ patient }: { patient: Patient }) {
       {/* NurseHelp - Full Width */}
       <CustomCard className="col-span-6 shadow-lg">
             <CardHeader>
-              <CardTitle className="flex items-center text-red-500">NurseHelp</CardTitle>
+              <CardTitle className="flex items-center text-custom-dark-purple">NurseHelp</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col md:flex-row gap-4 mt-4">
                 <Link
                     href="/patient/caregoals"
-                    className="flex-1 bg-light-purple-lilac p-4 rounded-lg shadow transition-transform hover:scale-105 flex items-center"
+                    className="flex-1 bg-white text-custom-lilac border-white p-4 rounded-lg shadow transition-transform hover:scale-105 flex items-center"
                 >
                   <Users className="w-5 h-5 mr-2"/>
                   <span className="text-dark-lilac font-medium">Caregoals</span>
                 </Link>
                 <Link
                     href={`/patient/${params.slug}/trend`}
-                    className="flex-1 bg-light-purple-lilac p-4 rounded-lg shadow transition-transform hover:scale-105 flex items-center"
+                    className="flex-1 bg-white text-custom-lilac border-white p-4 rounded-lg shadow transition-transform hover:scale-105 flex items-center"
                 >
                   <TrendingUp className="w-5 h-5 mr-2"/>
                   <span className="text-dark-lilac font-medium">Trend</span>
