@@ -6,6 +6,7 @@ import { Upload, MessageCircle, Brain, Activity } from "lucide-react"
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useParams, useRouter } from 'next/navigation'
+import db from "@/lib/db";
 
 export default function NewReportPage() {
   const params = useParams()
@@ -54,31 +55,35 @@ export default function NewReportPage() {
       // For now, we'll just simulate success after a delay
       
       // Uncomment this when you're ready to implement the actual API call
-      /*
+      
       const formData = new FormData()
       formData.append('file', file)
       formData.append('patientId', slug.split('-')[0])
       formData.append('reportType', reportType)
+
+      const patientID = slug.split('-')[0]
       
-      const response = await fetch('/api/reports/upload', {
+      const response = await fetch('/api/reports', {
         method: 'POST',
-        body: formData,
-      })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientID,
+          file,
+          reportType
+        })
+      });
       
       if (!response.ok) {
         throw new Error('Upload failed')
       }
-      */
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1500))
       
       setMessage("Report uploaded successfully!")
       
       // Redirect back to patient page after a short delay
       setTimeout(() => {
         router.push(`/patient/${slug}`)
-      }, 1500)
+      }, 2500)
       
     } catch (error) {
       setMessage("Error uploading report. Please try again.")
@@ -100,44 +105,44 @@ export default function NewReportPage() {
           </CardHeader>
           <CardContent className="flex flex-col items-center">
             <div className="grid grid-cols-1 gap-4 w-full mb-6">
-              <button
+              <CustomButton
                 type="button" 
-                onClick={() => selectReportType('conversation')}
-                className={`flex items-center justify-center p-4 rounded-lg border-2 transition-all ${
-                  reportType === 'conversation' 
-                    ? 'border-custom-lilac bg-light-purple-lilac bg-opacity-30' 
-                    : 'border-gray-200 hover:border-custom-lilac hover:bg-light-purple-lilac hover:bg-opacity-10'
+                onClick={() => selectReportType('Conversation')}
+                className={`bg-white text-custom-lilac border-white hover:bg-gray-100 text-md h-16 ${
+                  reportType === 'Conversation' 
+                    ? 'bg-white text-purple-700 border shadow-[0_0_20px_4px_rgba(255,255,255,0.8)]' 
+                    : 'bg-white text-custom-lilac border-white hover:bg-gray-100 text-md h-16'
                 }`}
               >
-                <MessageCircle className="w-5 h-5 mr-3 text-custom-lilac" />
+                <MessageCircle className="text-custom-lilac" />
                 <span className="text-custom-dark-purple">Upload Patient Conversation</span>
-              </button>
+              </CustomButton>
               
-              <button
+              <CustomButton
                 type="button" 
-                onClick={() => selectReportType('mental')}
-                className={`flex items-center justify-center p-4 rounded-lg border-2 transition-all ${
-                  reportType === 'mental' 
-                    ? 'border-custom-lilac bg-light-purple-lilac bg-opacity-30' 
-                    : 'border-gray-200 hover:border-custom-lilac hover:bg-light-purple-lilac hover:bg-opacity-10'
+                onClick={() => selectReportType('Mental-Health')}
+                className={`bg-white text-custom-lilac border-white hover:bg-gray-100 text-md h-16 ${
+                  reportType === 'Mental-Health' 
+                    ? 'bg-white text-purple-700 border shadow-[0_0_20px_4px_rgba(255,255,255,0.8)]' 
+                    : 'bg-white text-custom-lilac border-white hover:bg-gray-100 text-md h-16'
                 }`}
               >
-                <Brain className="w-5 h-5 mr-3 text-custom-lilac" />
+                <Brain className="text-custom-lilac" />
                 <span className="text-custom-dark-purple">Upload Mental Health Report</span>
-              </button>
+              </CustomButton>
               
-              <button
+              <CustomButton
                 type="button" 
-                onClick={() => selectReportType('physical')}
-                className={`flex items-center justify-center p-4 rounded-lg border-2 transition-all ${
-                  reportType === 'physical' 
-                    ? 'border-custom-lilac bg-light-purple-lilac bg-opacity-30' 
-                    : 'border-gray-200 hover:border-custom-lilac hover:bg-light-purple-lilac hover:bg-opacity-10'
+                onClick={() => selectReportType('Physio')}
+                className={`bg-white text-custom-lilac border-white hover:bg-gray-100 text-md h-16 ${
+                  reportType === 'Physio' 
+                    ? 'bg-white text-purple-700 border shadow-[0_0_20px_4px_rgba(255,255,255,0.8)]' 
+                    : 'bg-white text-custom-lilac border-white hover:bg-gray-100 text-md h-16'
                 }`}
               >
                 <Activity className="w-5 h-5 mr-3 text-custom-lilac" />
                 <span className="text-custom-dark-purple">Upload Physical Evaluation</span>
-              </button>
+              </CustomButton>
             </div>
             
             {reportType && (
@@ -148,18 +153,20 @@ export default function NewReportPage() {
                     className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-light-purple-lilac rounded-lg cursor-pointer bg-light-purple-lilac bg-opacity-10 hover:bg-opacity-20 transition-all"
                   >
                     <div className="flex flex-col items-center justify-center pt-4 pb-4">
-                      <Upload className="w-8 h-8 mb-2 text-custom-lilac" />
-                      <p className="text-sm text-center text-custom-dark-purple">
-                        <span className="font-semibold">Click to upload</span> or drag and drop
-                      </p>
-                      <p className="text-xs text-center text-custom-lilac">JSON files only</p>
+                      {file ? 
+                        <div className="mt-1 text-sm text-center text-custom-dark-purple">
+                          Selected file: <span className="font-semibold">{file.name}</span>
+                        </div> 
+                        :
+                        <div>
+                          <Upload className="w-8 h-8 mb-2 text-custom-dark-purple" />
+                          <p className="text-sm text-center text-custom-dark-purple">
+                            <span className="font-semibold">Click to upload</span> or drag and drop
+                          </p>
+                          <p className="text-xs text-center text-custom-lilac">JSON files only</p>
+                        </div>
+                        }
                     </div>
-                    
-                    {file && (
-                      <div className="mt-1 text-sm text-center text-custom-dark-purple">
-                        Selected file: {file.name}
-                      </div>
-                    )}
                     
                     <input
                       id="file-upload"
