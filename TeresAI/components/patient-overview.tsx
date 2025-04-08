@@ -75,18 +75,17 @@ export function PatientOverview({ patient }: { patient: Patient }) {
       <div className="grid grid-cols-1 md:grid-cols-6 gap-6 w-full max-w-full mt-6">
         {/* Reports - Full Width */}
         <CustomCard className="col-span-6 shadow-lg">
-          <CardHeader>
-            <div className="flex justify-between items-center w-full">
-              <div className="flex justify-between items-center">
-                <CardTitle className="text-custom-dark-purple">Reports</CardTitle>
-              <input
-                type="text"
-                placeholder="Search reports..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="border border-gray-300 rounded-lg px-4 py-2 text-sm text-black w-64 focus:outline-none focus:ring-2 focus:ring-custom-dark-purple"
-              />
-            </div>
+          <CardHeader className="flex">
+            <div className="flex justify-right items-center w-full">
+              <CardTitle className="text-custom-dark-purple flex">Reports</CardTitle>
+              <div className="flex justify-between items-center gap-2 ml-auto">
+                <input
+                  type="text"
+                  placeholder="Search reports..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-4 py-2 text-sm text-black w-64 focus:outline-none focus:ring-2 focus:ring-custom-dark-purple"
+                />
                 <Link href={`/patient/${slug}/reports/new`}>
                   <CustomButton className="bg-green-500 hover:bg-green-600 text-white">
                     <PlusCircle className="w-4 h-4 mr-2" />
@@ -94,6 +93,7 @@ export function PatientOverview({ patient }: { patient: Patient }) {
                   </CustomButton>
                 </Link>
               </div>
+            </div>
           </CardHeader>
 
           <CardContent>
