@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { CustomButton, CustomCard } from "@/components/ui/custom-styles"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileAudio, FileText, Settings, Mic, Clock, Plus } from "lucide-react"
+import { FileAudio, FileText, Settings, Mic, Clock, Plus, Cloud, Sun, Moon } from "lucide-react"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -96,7 +96,7 @@ export default async function PlatformPage() {
             </CardContent>
           </CustomCard>
 
-          {/* Card Handovers - UPDATED SECTION */}
+          {/* Card Handovers - UPDATED SECTION WITH FIXED CARD SIZES */}
           <CustomCard>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -118,141 +118,104 @@ export default async function PlatformPage() {
             </CardHeader>
 
             <CardContent>
-              <div className="h-[500px] overflow-y-auto pr-2">
-                <ul className="space-y-4">
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/morning-09-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Morning Handover <span className="ml-1">☁️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(09/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
+              <ul className="space-y-4">
+                {/* Only show 8 handovers to match patient list */}
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Cloud className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/morning-09-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Morning Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(09/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
 
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/evening-08-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Evening Handover <span className="ml-1">🌙</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(08/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Moon className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/evening-08-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Evening Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(08/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
 
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/noon-08-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Noon Handover <span className="ml-1">☀️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(08/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Sun className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/noon-08-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Noon Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(08/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
 
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/morning-08-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Morning Handover <span className="ml-1">☁️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(08/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Cloud className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/morning-08-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Morning Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(08/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
 
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/evening-07-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Evening Handover <span className="ml-1">🌙</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(07/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Moon className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/evening-07-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Evening Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(07/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
 
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/noon-07-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Noon Handover <span className="ml-1">☀️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(07/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Sun className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/noon-07-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Noon Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(07/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
 
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/morning-07-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Morning Handover <span className="ml-1">☁️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(07/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Cloud className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/morning-07-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Morning Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(07/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
 
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/evening-06-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Evening Handover <span className="ml-1">🌙</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(06/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/noon-06-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Noon Handover <span className="ml-1">☀️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(06/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/morning-06-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Morning Handover <span className="ml-1">☁️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(06/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/evening-05-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Evening Handover <span className="ml-1">🌙</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(05/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="group w-full border border-white bg-white rounded-md p-2 hover:text-custom-lilac hover:bg-white transition-colors">
-                      <Link href={`/handovers/morning-05-04-2025`} className="block">
-                        <div className="w-full text-custom-lilac font-medium mb-2">
-                          Morning Handover <span className="ml-1">☁️</span>
-                        </div>
-                        <div className="text-sm text-gray-500">(05/04/2025)</div>
-                      </Link>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                <li>
+                  <div className="group w-full border border-white bg-white rounded-md p-4 hover:text-custom-lilac hover:bg-white transition-colors relative overflow-hidden">
+                    <Moon className="absolute right-2 bottom-2 text-custom-dark-purple opacity-10" size={40} />
+                    <Link href={`/handovers/evening-06-04-2025`} className="block">
+                      <div className="w-full text-custom-lilac font-medium mb-2 relative z-10">
+                        Evening Handover
+                      </div>
+                      <div className="text-sm text-gray-500 relative z-10">(06/04/2025)</div>
+                    </Link>
+                  </div>
+                </li>
+              </ul>
             </CardContent>
           </CustomCard>
         </div>

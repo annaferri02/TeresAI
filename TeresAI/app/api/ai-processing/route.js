@@ -40,7 +40,7 @@ export async function POST(req) {
 
       *** VERY IMPORTANT: You MUST respond with ONLY a valid JSON array containing objects with these exact fields: "direction", "description", and "emoji". No explanations, no other text. ***
 
-      ***** MOST IMPORTANT: ALWAYS read the date at the beginning of each file. This trend analysis should keep its temporal order.
+      ***ç** MOST IMPORTANT: ALWAYS read the date at the beginning of each file. This trend analysis should keep its temporal order.
       That means that you always analyse the development from the second most recent file to the most recent file.
       E.g.: Morning conversation today had 6 pain related words, Evening conversation today had 10 related words = increase in pain related words trend generated.*****
 
