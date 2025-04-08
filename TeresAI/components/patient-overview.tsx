@@ -26,6 +26,7 @@ type Patient = {
 }
 
 export function PatientOverview({ patient }: { patient: Patient }) {
+  const params = useParams();
   const [search, setSearch] = useState("");
 
   const filteredReports = patient.reports.filter((report) =>
