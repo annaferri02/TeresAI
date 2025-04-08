@@ -92,7 +92,7 @@ export default async function TrendPage({ params }: PageProps) {
             </CardContent>
           </CustomCard>
         <div className="mt-12 space-x-4">
-          <Link href="/patient">
+          <Link href={`/patient/${slug}`}>
             <CustomButton variant="outline">Back to Patient's Dashboard</CustomButton>
           </Link>
         </div>
