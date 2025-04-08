@@ -27,6 +27,7 @@ type Patient = {
 export function PatientOverview({ patient }: { patient: Patient }) {
   const params = useParams();
   const [search, setSearch] = useState("");
+  const slug = params.slug as string;
 
   const filteredReports = patient.reports.filter((report) =>
     report.type.toLowerCase().includes(search.toLowerCase()) ||
