@@ -1,10 +1,10 @@
-"use client";
 import { TrendingUp, TrendingDown, TrendingUpDown } from "lucide-react"
 import Link from "next/link";
 import {CustomButton, CustomCard} from "@/components/ui/custom-styles";
 import TrendBox from "@/components/trendbox";
 import { Noto_Emoji } from "next/font/google";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import db from "@/lib/db";
 
 
 export default function TrendPage() {
