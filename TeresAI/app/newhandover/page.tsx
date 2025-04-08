@@ -44,7 +44,7 @@ export default async function NewHandoverPage() {
                 <p className="mb-4 text-custom-dark-purple">Create a morning handover</p>
                 <p className="mb-4 text-custom-dark-purple text-sm">for {todayDate}</p>
                 <Link href={`/newhandover/createhandover?type=morning&date=${todayDate}`}>
-                  <CustomButton className="w-full justify-center">
+                  <CustomButton className="flex-1 bg-white text-custom-lilac border-white p-4 rounded-lg shadow transition-transform hover:scale-105 flex items-center">
                     Create Morning Handover
                   </CustomButton>
                 </Link>
@@ -65,7 +65,7 @@ export default async function NewHandoverPage() {
                 <p className="mb-4 text-custom-dark-purple">Create a noon handover</p>
                 <p className="mb-4 text-custom-dark-purple text-sm">for {todayDate}</p>
                 <Link href={`/newhandover/createhandover?type=noon&date=${todayDate}`}>
-                  <CustomButton className="w-full justify-center">
+                  <CustomButton className="flex-1 bg-white text-custom-lilac border-white p-4 rounded-lg shadow transition-transform hover:scale-105 flex items-center">
                     Create Noon Handover
                   </CustomButton>
                 </Link>
@@ -86,7 +86,7 @@ export default async function NewHandoverPage() {
                 <p className="mb-4 text-custom-dark-purple">Create an evening handover</p>
                 <p className="mb-4 text-custom-dark-purple text-sm">for {todayDate}</p>
                 <Link href={`/newhandover/createhandover?type=evening&date=${todayDate}`}>
-                  <CustomButton className="w-full justify-center">
+                  <CustomButton className="flex-1 bg-white text-custom-lilac border-white p-4 rounded-lg shadow transition-transform hover:scale-105 flex items-center">
                     Create Evening Handover
                   </CustomButton>
                 </Link>
