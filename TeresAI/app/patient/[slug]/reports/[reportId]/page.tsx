@@ -159,7 +159,7 @@ export default function NewReportPage() {
                         </div> 
                         :
                         <div>
-                          <Upload className="w-8 h-8 mb-2 text-custom-dark-purple" />
+                          <Upload className="w-8 h-8 mb-2 text-custom-dark-purple m-auto" />
                           <p className="text-sm text-center text-custom-dark-purple">
                             <span className="font-semibold">Click to upload</span> or drag and drop
                           </p>
